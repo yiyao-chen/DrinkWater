@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +47,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
+        val textView: TextView = binding.textAmount
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
@@ -57,13 +58,44 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val buttonIncrease: Button = binding.btnIncrease
+        val buttonDecrease: Button = binding.btnDecrease
+        val buttonAdd: Button = binding.btnAdd
 
-        val button: Button = binding.btnNotify
+        val textAmount: TextView = binding.textAmount
+        val textTotalAmount: TextView = binding.textTotalAmount
+        var amountTobeAdded = 0
 
-//        button.setOnClickListener {
-//            showNotification()
-//        }
+        buttonIncrease.setOnClickListener {
+            //Log.i("MY_TAG", "hello world");
+            System.out.println("clicked button")
+            val currentAmount = textAmount.text.toString().toInt()
+            System.out.println("amount now " + currentAmount)
+            val newAmount = currentAmount + 50
+            System.out.println("amount new " + newAmount)
+            textAmount.setText(newAmount.toString())
+            amountTobeAdded = newAmount
+        }
 
+        buttonDecrease.setOnClickListener {
+            if (!textAmount.text.toString().equals("0")) {
+                val currentAmount = textAmount.text.toString().toInt()
+                val newAmount = currentAmount - 50
+                textAmount.setText(newAmount.toString())
+                amountTobeAdded = newAmount
+
+            }
+        }
+
+        buttonAdd.setOnClickListener {
+            val currentAmount = textTotalAmount.text.toString().toInt()
+            val newAmount = currentAmount + amountTobeAdded
+            System.out.println("total amount current " + textTotalAmount.text)
+            textTotalAmount.setText(newAmount.toString())
+            System.out.println("total amount now " + textTotalAmount.text)
+            //textAmount.setText("0")
+
+        }
 
         // Schedule periodic work using WorkManager
         val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
