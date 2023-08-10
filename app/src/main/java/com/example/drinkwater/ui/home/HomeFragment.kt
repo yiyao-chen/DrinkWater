@@ -1,24 +1,14 @@
 package com.example.drinkwater.ui.home
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -26,17 +16,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.example.drinkwater.DataStoreProvider
 import com.example.drinkwater.databinding.FragmentHomeBinding
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
-// At the top level of your kotlin file:
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class HomeFragment : Fragment() {
-    private val TOTAL_AMOUNT = intPreferencesKey("total_amount")
+    lateinit var myDataStore: DataStoreProvider
+
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
@@ -74,10 +66,12 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        System.out.println("   onViewCreated")
-        System.out.println("   readNonNullData:")
+        myDataStore = DataStoreProvider(requireContext())
 
-        System.out.println(readNonNullData(TOTAL_AMOUNT, 0) )
+        System.out.println("   onViewCreated")
+        System.out.println("getgetget...")
+
+        System.out.println(myDataStore.getTotalAmount())
 
         val buttonIncrease: Button = binding.btnIncrease
         val buttonDecrease: Button = binding.btnDecrease
@@ -87,6 +81,20 @@ class HomeFragment : Fragment() {
         val textTotalAmount: TextView = binding.textTotalAmount
         var amountTobeAdded = 0
 
+        val currentDate = LocalDate.now()
+        val currentDateTime = LocalDateTime.now()
+        var time = currentDateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+        System.out.println(currentDate)
+        System.out.println(currentDateTime)
+        System.out.println(time)
+
+        if (time.equals("00:00:00")) {
+            runBlocking {
+                myDataStore.updateTotalAmount(0)
+            }
+
+        }
+        textTotalAmount.setText(myDataStore.getTotalAmount().toString())
 
 
         buttonIncrease.setOnClickListener {
@@ -113,17 +121,21 @@ class HomeFragment : Fragment() {
 
         buttonAdd.setOnClickListener {
             System.out.println("clicked button add")
-            val currentAmount = textTotalAmount.text.toString().toInt()
+            //val currentAmount = textTotalAmount.text.toString().toInt()
+
+            val currentAmount = myDataStore.getTotalAmount()
             System.out.println("total amount before: " + currentAmount)
 
-            val newAmount = currentAmount + amountTobeAdded
-            textTotalAmount.setText(newAmount.toString())
-            System.out.println("total amount now " + textTotalAmount.text)
-            //textAmount.setText("0")
+            val newAmount = currentAmount?.plus(amountTobeAdded)
 
             runBlocking {
-                saveAmountToPreferencesStore(newAmount)
+                if (newAmount != null) {
+                    myDataStore.updateTotalAmount(newAmount)
+                }
             }
+
+            textTotalAmount.setText(myDataStore.getTotalAmount().toString())
+
         }
 
         // Schedule periodic work using WorkManager
@@ -143,28 +155,23 @@ class HomeFragment : Fragment() {
     private suspend fun saveAmountToPreferencesStore(amount: Int) {
         System.out.println("saveAmountToPreferencesStore")
 
-        requireContext().dataStore.edit { preferences ->
-            preferences[TOTAL_AMOUNT] = amount
-            System.out.println("preferences[TOTAL_AMOUNT]... " + preferences[TOTAL_AMOUNT])
-        }
-        System.out.println("readNonNullData... " )
+//        requireContext().dataStore.edit { preferences ->
+//            preferences[TOTAL_AMOUNT] = amount
+//            System.out.println("preferences[TOTAL_AMOUNT]... " + preferences[TOTAL_AMOUNT])
+//        }
 
-        System.out.println(readNonNullData(TOTAL_AMOUNT, 0) )
+        //myDataStore.saveTotalAmount(amount)
+        System.out.println("rad total amount... " )
+
+        //System.out.println(myDataStore.readTotalAmount() )
     }
 
+//
+//    private fun getIntSync(key: String, defValue: Int): Int =
+//        readNonNullData(intPreferencesKey(key), defValue)
+//
 
-    private fun getIntSync(key: String, defValue: Int): Int =
-        readNonNullData(intPreferencesKey(key), defValue)
 
-
-    fun <T> readNonNullData(key: Preferences.Key<T>, defValue: T): T {
-
-        return runBlocking {
-            requireContext().dataStore.data.map {
-                it[key] ?: defValue
-            }.first()
-        }
-    }
 //    private fun showNotification() {
 //        val notificationManager = requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 //
