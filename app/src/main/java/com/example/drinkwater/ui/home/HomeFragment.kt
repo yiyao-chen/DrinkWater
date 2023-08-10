@@ -89,10 +89,7 @@ class HomeFragment : Fragment() {
         System.out.println(time)
 
         if (time.equals("00:00:00")) {
-            runBlocking {
-                myDataStore.updateTotalAmount(0)
-            }
-
+            myDataStore.updateTotalAmount(0)
         }
         textTotalAmount.setText(myDataStore.getTotalAmount().toString())
 
@@ -128,10 +125,8 @@ class HomeFragment : Fragment() {
 
             val newAmount = currentAmount?.plus(amountTobeAdded)
 
-            runBlocking {
-                if (newAmount != null) {
-                    myDataStore.updateTotalAmount(newAmount)
-                }
+            if (newAmount != null) {
+                myDataStore.updateTotalAmount(newAmount)
             }
 
             textTotalAmount.setText(myDataStore.getTotalAmount().toString())

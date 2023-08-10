@@ -30,10 +30,11 @@ class DataStoreProvider(private val context: Context) {
 //            .first()
 //    }
 
-    suspend fun updateTotalAmount(totalAmount: Int) {
-
-        context.dataStore.edit { setting ->
-            setting[TOTAL_AMOUNT] = totalAmount
+    fun updateTotalAmount(totalAmount: Int) {
+        runBlocking {
+            context.dataStore.edit { setting ->
+                setting[TOTAL_AMOUNT] = totalAmount
+            }
         }
     }
 
@@ -41,7 +42,7 @@ class DataStoreProvider(private val context: Context) {
 
         return runBlocking {
             context.dataStore.data.map {
-                it[TOTAL_AMOUNT] ?: null
+                it[TOTAL_AMOUNT]
             }.first()
         }
     }
