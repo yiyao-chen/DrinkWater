@@ -74,8 +74,8 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
         btnSaveDailyGoal.setOnClickListener {
-            sharedViewModel.changeData("2000")
-            myDataStore.updateDailyGoal(2000)
+            sharedViewModel.changeData("1200")
+            myDataStore.updateDailyGoal(1200.0)
 
         }
 

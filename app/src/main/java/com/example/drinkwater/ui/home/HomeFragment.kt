@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -16,6 +17,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.drinkwater.DataStoreProvider
+import com.example.drinkwater.R
 import com.example.drinkwater.databinding.FragmentHomeBinding
 import com.example.drinkwater.ui.dashboard.SharedViewModel
 import java.time.LocalDate
@@ -67,10 +69,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         myDataStore = DataStoreProvider(requireContext())
 
-        System.out.println("getgetget...")
-
-        System.out.println(myDataStore.getTotalAmount())
-
         val buttonIncrease: Button = binding.btnIncrease
         val buttonDecrease: Button = binding.btnDecrease
         val buttonAdd: Button = binding.btnAdd
@@ -78,15 +76,16 @@ class HomeFragment : Fragment() {
         val textAmount: TextView = binding.textAmount
         val textTotalAmount: TextView = binding.textTotalAmount
         val textDailyGoal: TextView = binding.textGoal
-
+        val imgBottle: ImageView = binding.homeImg
         var amountTobeAdded = 0
 
         val currentDate = LocalDate.now()
         val currentDateTime = LocalDateTime.now()
         var time = currentDateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))
-        System.out.println(currentDate)
-        System.out.println(currentDateTime)
+
+        System.out.println("time")
         System.out.println(time)
+        myDataStore.updateTotalAmount(0)
 
         if (time.equals("00:00:00")) {
             myDataStore.updateTotalAmount(0)
@@ -94,11 +93,9 @@ class HomeFragment : Fragment() {
         textTotalAmount.setText(myDataStore.getTotalAmount().toString())
 
         buttonIncrease.setOnClickListener {
-            //Log.i("MY_TAG", "hello world");
             System.out.println("clicked button increase")
             val currentAmount = textAmount.text.toString().toInt()
             val newAmount = currentAmount + 50
-            System.out.println("amount to be added" + newAmount)
             textAmount.setText(newAmount.toString())
             amountTobeAdded = newAmount
         }
@@ -132,6 +129,36 @@ class HomeFragment : Fragment() {
 
 
             // update image
+
+            val currentTotal = myDataStore.getTotalAmount()
+            val currentGoal = myDataStore.getDailyGoal()
+            val result = currentTotal?.div(currentGoal!!)
+
+            if (result != null) {
+                if (result >= 1) {
+                    imgBottle.setImageResource(R.drawable.bottle_10)
+                } else if (result >= (9/10.0)) {
+                    imgBottle.setImageResource(R.drawable.bottle_9)
+                } else if (result >= (8/10.0)) {
+                    imgBottle.setImageResource(R.drawable.bottle_8)
+                } else if (result >= (7/10.0)) {
+                    imgBottle.setImageResource(R.drawable.bottle_7)
+                } else if (result >= (6/10.0)) {
+                    imgBottle.setImageResource(R.drawable.bottle_6)
+                } else if (result >= (5/10.0)) {
+                    imgBottle.setImageResource(R.drawable.bottle_5)
+                } else if (result >= (4/10.0)) {
+                    imgBottle.setImageResource(R.drawable.bottle_4)
+                } else if (result >= (3/10.0)) {
+                    imgBottle.setImageResource(R.drawable.bottle_3)
+                } else if (result >= (2/10.0)) {
+                    imgBottle.setImageResource(R.drawable.bottle_2)
+                } else if (result >= (1/10.0)) {
+                    imgBottle.setImageResource(R.drawable.bottle_1)
+                } else if (result == 0.0) {
+                    imgBottle.setImageResource(R.drawable.bottle_0)
+                }
+            }
 
         }
 

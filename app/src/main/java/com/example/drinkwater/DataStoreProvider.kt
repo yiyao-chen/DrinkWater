@@ -1,12 +1,10 @@
 package com.example.drinkwater
 
 import android.content.Context
-import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import com.example.drinkwater.ui.home.dataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -16,9 +14,10 @@ import kotlinx.coroutines.runBlocking
 class DataStoreProvider(private val context: Context) {
 
     private val TOTAL_AMOUNT = intPreferencesKey("total_amount")
-    private val dailyGoal = intPreferencesKey("daily_goal")
+    private val dailyGoal = doublePreferencesKey("daily_goal")
 
     fun updateTotalAmount(value: Int) {
+        System.out.println("updateTotalAmount val " + value)
         runBlocking {
             context.dataStore.edit { setting ->
                 setting[TOTAL_AMOUNT] = value
@@ -26,7 +25,7 @@ class DataStoreProvider(private val context: Context) {
         }
     }
 
-    fun updateDailyGoal(value: Int) {
+    fun updateDailyGoal(value: Double) {
         runBlocking {
             context.dataStore.edit { setting ->
                 setting[dailyGoal] = value
@@ -43,7 +42,7 @@ class DataStoreProvider(private val context: Context) {
     }
 
 
-    fun getDailyGoal(): Int? {
+    fun getDailyGoal(): Double? {
         return runBlocking {
             context.dataStore.data.map {
                 it[dailyGoal]
