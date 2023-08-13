@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class DashboardViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "Notification interval"
+        value = "Set notification interval:"
     }
     val text: LiveData<String> = _text
 }

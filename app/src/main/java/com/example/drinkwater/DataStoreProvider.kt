@@ -16,30 +16,25 @@ import kotlinx.coroutines.runBlocking
 class DataStoreProvider(private val context: Context) {
 
     private val TOTAL_AMOUNT = intPreferencesKey("total_amount")
+    private val dailyGoal = intPreferencesKey("daily_goal")
 
-//    suspend fun readTotalAmount(): Int? {
-//        var totalAmount: Int? = null
-//        context.dataStore.data
-//            .map { preferences ->
-//                totalAmount = preferences[TOTAL_AMOUNT]
-//            }
-//        return totalAmount
-//
-//        return context.dataStore.data
-//            .map { preferences -> preferences[TOTAL_AMOUNT] ?: null }
-//            .first()
-//    }
-
-    fun updateTotalAmount(totalAmount: Int) {
+    fun updateTotalAmount(value: Int) {
         runBlocking {
             context.dataStore.edit { setting ->
-                setting[TOTAL_AMOUNT] = totalAmount
+                setting[TOTAL_AMOUNT] = value
+            }
+        }
+    }
+
+    fun updateDailyGoal(value: Int) {
+        runBlocking {
+            context.dataStore.edit { setting ->
+                setting[dailyGoal] = value
             }
         }
     }
 
     fun getTotalAmount(): Int? {
-
         return runBlocking {
             context.dataStore.data.map {
                 it[TOTAL_AMOUNT]
@@ -47,12 +42,22 @@ class DataStoreProvider(private val context: Context) {
         }
     }
 
-    fun <T> readNonNullData(key: Preferences.Key<T>, defValue: T): T {
 
+    fun getDailyGoal(): Int? {
+        return runBlocking {
+            context.dataStore.data.map {
+                it[dailyGoal]
+            }.first()
+        }
+    }
+
+    fun <T> readIntData(key: Preferences.Key<T>, defValue: T): T {
         return runBlocking {
             context.dataStore.data.map {
                 it[key] ?: defValue
             }.first()
         }
     }
+
+
 }

@@ -28,15 +28,12 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "se
 
 class HomeFragment : Fragment() {
     lateinit var myDataStore: DataStoreProvider
-
-
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
 
 
 //    companion object {
@@ -68,7 +65,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         myDataStore = DataStoreProvider(requireContext())
 
-        System.out.println("   onViewCreated")
         System.out.println("getgetget...")
 
         System.out.println(myDataStore.getTotalAmount())
@@ -79,6 +75,8 @@ class HomeFragment : Fragment() {
 
         val textAmount: TextView = binding.textAmount
         val textTotalAmount: TextView = binding.textTotalAmount
+        val textDailyGoal: TextView = binding.textGoal
+
         var amountTobeAdded = 0
 
         val currentDate = LocalDate.now()
@@ -92,7 +90,6 @@ class HomeFragment : Fragment() {
             myDataStore.updateTotalAmount(0)
         }
         textTotalAmount.setText(myDataStore.getTotalAmount().toString())
-
 
         buttonIncrease.setOnClickListener {
             //Log.i("MY_TAG", "hello world");
@@ -130,7 +127,6 @@ class HomeFragment : Fragment() {
             }
 
             textTotalAmount.setText(myDataStore.getTotalAmount().toString())
-
         }
 
         // Schedule periodic work using WorkManager
@@ -156,7 +152,6 @@ class HomeFragment : Fragment() {
 //        }
 
         //myDataStore.saveTotalAmount(amount)
-        System.out.println("rad total amount... " )
 
         //System.out.println(myDataStore.readTotalAmount() )
     }

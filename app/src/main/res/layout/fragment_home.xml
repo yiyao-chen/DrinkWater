@@ -25,7 +25,7 @@
                 android:layout_gravity="center">
                 <TextView
                     android:id="@+id/text_todays_goal"
-                    android:text="Today's goal"
+                    android:text="Today's goal: "
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -95,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="400sp"
         android:layout_gravity="center"
-        android:src="@drawable/bottle" />
+        android:src="@drawable/bottle_1" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
