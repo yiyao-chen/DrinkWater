@@ -11,14 +11,13 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.drinkwater.DataStoreProvider
 import com.example.drinkwater.databinding.FragmentHomeBinding
-import kotlinx.coroutines.runBlocking
+import com.example.drinkwater.ui.dashboard.SharedViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -28,7 +27,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "se
 
 class HomeFragment : Fragment() {
     lateinit var myDataStore: DataStoreProvider
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var sharedViewModel: SharedViewModel
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
@@ -46,15 +45,18 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        //Fragment之间通过传入同一个Activity来共享ViewModel
+        sharedViewModel =
+            ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textAmount
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        val textGoal: TextView = binding.textGoal
+
+        // Listen to changes in settings
+        sharedViewModel.itemLiveData.observe(requireActivity(), { itemStr ->
+            textGoal.text = itemStr
         })
 
 
@@ -127,6 +129,10 @@ class HomeFragment : Fragment() {
             }
 
             textTotalAmount.setText(myDataStore.getTotalAmount().toString())
+
+
+            // update image
+
         }
 
         // Schedule periodic work using WorkManager

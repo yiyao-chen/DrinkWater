@@ -12,14 +12,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.example.drinkwater.DataStoreProvider
 import com.example.drinkwater.R
 import com.example.drinkwater.databinding.FragmentDashboardBinding
 import com.example.drinkwater.ui.home.NotificationWorker
 import java.util.concurrent.TimeUnit
 
 class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
+    lateinit var myDataStore: DataStoreProvider
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var sharedViewModel: SharedViewModel
     private lateinit var notificationIntervalEditText: EditText
 
     private var _binding: FragmentDashboardBinding? = null
@@ -33,18 +35,21 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+        //Fragment之间通过传入同一个Activity来共享ViewModel
+        sharedViewModel =
+            ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        myDataStore = DataStoreProvider(requireContext())
 
         //val textView: TextView = binding.textDashboard
         notificationIntervalEditText = binding.edittextNotificationInterval
         val saveButton: Button = binding.btnSave
-
+        val btnSaveDailyGoal: Button = binding.btnSaveDailyGoal
+        val textDailyGoal: TextView = binding.textDailyGoal
         val text1: TextView = binding.text1
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+        sharedViewModel.text.observe(viewLifecycleOwner, Observer {
             text1.text = it
         })
 
@@ -66,6 +71,12 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 // Reschedule the work with the new interval
                 rescheduleNotificationWorker(interval)
             }
+        }
+
+        btnSaveDailyGoal.setOnClickListener {
+            sharedViewModel.changeData("2000")
+            myDataStore.updateDailyGoal(2000)
+
         }
 
 
