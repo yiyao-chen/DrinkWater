@@ -1,6 +1,8 @@
 package com.example.drinkwater.ui.home
 
+import android.app.AlarmManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +25,7 @@ import com.example.drinkwater.ui.dashboard.SharedViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -81,15 +84,12 @@ class HomeFragment : Fragment() {
 
         val currentDate = LocalDate.now()
         val currentDateTime = LocalDateTime.now()
+
         var time = currentDateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+        textTotalAmount.setText(myDataStore.getTotalAmount().toString())
 
-        System.out.println("time")
-        System.out.println(time)
-        myDataStore.updateTotalAmount(0)
+        updateImage(imgBottle)
 
-        if (time.equals("00:00:00")) {
-            myDataStore.updateTotalAmount(0)
-        }
         textTotalAmount.setText(myDataStore.getTotalAmount().toString())
 
         buttonIncrease.setOnClickListener {
@@ -127,38 +127,7 @@ class HomeFragment : Fragment() {
 
             textTotalAmount.setText(myDataStore.getTotalAmount().toString())
 
-
-            // update image
-
-            val currentTotal = myDataStore.getTotalAmount()
-            val currentGoal = myDataStore.getDailyGoal()
-            val result = currentTotal?.div(currentGoal!!)
-
-            if (result != null) {
-                if (result >= 1) {
-                    imgBottle.setImageResource(R.drawable.bottle_10)
-                } else if (result >= (9/10.0)) {
-                    imgBottle.setImageResource(R.drawable.bottle_9)
-                } else if (result >= (8/10.0)) {
-                    imgBottle.setImageResource(R.drawable.bottle_8)
-                } else if (result >= (7/10.0)) {
-                    imgBottle.setImageResource(R.drawable.bottle_7)
-                } else if (result >= (6/10.0)) {
-                    imgBottle.setImageResource(R.drawable.bottle_6)
-                } else if (result >= (5/10.0)) {
-                    imgBottle.setImageResource(R.drawable.bottle_5)
-                } else if (result >= (4/10.0)) {
-                    imgBottle.setImageResource(R.drawable.bottle_4)
-                } else if (result >= (3/10.0)) {
-                    imgBottle.setImageResource(R.drawable.bottle_3)
-                } else if (result >= (2/10.0)) {
-                    imgBottle.setImageResource(R.drawable.bottle_2)
-                } else if (result >= (1/10.0)) {
-                    imgBottle.setImageResource(R.drawable.bottle_1)
-                } else if (result == 0.0) {
-                    imgBottle.setImageResource(R.drawable.bottle_0)
-                }
-            }
+            updateImage(imgBottle)
 
         }
 
@@ -174,6 +143,41 @@ class HomeFragment : Fragment() {
             ExistingPeriodicWorkPolicy.KEEP,
             workRequest
         )
+
+
+
+    }
+
+    private fun updateImage(imgBottle: ImageView) {
+        val currentTotal = myDataStore.getTotalAmount()
+        val currentGoal = myDataStore.getDailyGoal()
+        val result = currentTotal?.div(currentGoal!!)
+
+        if (result != null) {
+            if (result >= 1) {
+                imgBottle.setImageResource(R.drawable.bottle_10)
+            } else if (result >= (9 / 10.0)) {
+                imgBottle.setImageResource(R.drawable.bottle_9)
+            } else if (result >= (8 / 10.0)) {
+                imgBottle.setImageResource(R.drawable.bottle_8)
+            } else if (result >= (7 / 10.0)) {
+                imgBottle.setImageResource(R.drawable.bottle_7)
+            } else if (result >= (6 / 10.0)) {
+                imgBottle.setImageResource(R.drawable.bottle_6)
+            } else if (result >= (5 / 10.0)) {
+                imgBottle.setImageResource(R.drawable.bottle_5)
+            } else if (result >= (4 / 10.0)) {
+                imgBottle.setImageResource(R.drawable.bottle_4)
+            } else if (result >= (3 / 10.0)) {
+                imgBottle.setImageResource(R.drawable.bottle_3)
+            } else if (result >= (2 / 10.0)) {
+                imgBottle.setImageResource(R.drawable.bottle_2)
+            } else if (result >= (1 / 10.0)) {
+                imgBottle.setImageResource(R.drawable.bottle_1)
+            } else if (result == 0.0) {
+                imgBottle.setImageResource(R.drawable.bottle_0)
+            }
+        }
     }
 
     private suspend fun saveAmountToPreferencesStore(amount: Int) {
