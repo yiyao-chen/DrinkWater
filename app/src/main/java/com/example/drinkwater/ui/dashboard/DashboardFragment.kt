@@ -47,7 +47,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
         notificationIntervalEditText = binding.edittextNotificationInterval
         val saveButton: Button = binding.btnSave
         val btnSaveDailyGoal: Button = binding.btnSaveDailyGoal
-        val textDailyGoal: TextView = binding.textDailyGoal
+        val textDailyGoal: EditText = binding.textDailyGoal
         val text1: TextView = binding.text1
         sharedViewModel.text.observe(viewLifecycleOwner, Observer {
             text1.text = it
@@ -74,9 +74,11 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
         btnSaveDailyGoal.setOnClickListener {
-            sharedViewModel.changeData("1200")
-            myDataStore.updateDailyGoal(1200.0)
+            val goal = textDailyGoal.text.toString()
+            sharedViewModel.changeData(goal)
+            myDataStore.updateDailyGoal(goal.toDouble())
 
+            Toast.makeText(requireContext(), "Daily goal set", Toast.LENGTH_LONG).show()
         }
 
 

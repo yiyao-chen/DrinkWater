@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Set today's goal"
+        android:text="Set today's goal (ml):"
         android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/text_daily_goal"
@@ -20,27 +20,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+
+    <EditText
         android:id="@+id/text_daily_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="1000"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_save_daily_goal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_set_todays_goal">
 
-    </TextView>
+
+    </EditText>
     <Button
         android:id="@+id/btn_save_daily_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="18dp"
-        android:text="Save daily goal"
+        android:text="Save"
         app:layout_constraintBottom_toTopOf="@+id/text1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_set_todays_goal" />
+        app:layout_constraintTop_toBottomOf="@+id/text_daily_goal" />
 
     <TextView
         android:id="@+id/text1"

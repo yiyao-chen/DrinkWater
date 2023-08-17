@@ -86,6 +86,7 @@ class HomeFragment : Fragment() {
         val currentDateTime = LocalDateTime.now()
 
         var time = currentDateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+        textDailyGoal.setText(myDataStore.getDailyGoal().toString() + " ml")
         textTotalAmount.setText(myDataStore.getTotalAmount().toString())
 
         updateImage(imgBottle)
