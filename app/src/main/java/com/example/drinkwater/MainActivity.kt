@@ -63,7 +63,21 @@ class MainActivity : AppCompatActivity() {
             System.out.println("switches[i] :n " + switches[i])
             System.out.println("myDataStore.getSwitchState(switches[i]) : ")
             System.out.println( myDataStore.getSwitchState(switches[i])
+
             )
+            if (myDataStore.getSwitchState(switches[i]) == true) {
+                System.out.println(" schedule alarm ")
+                val cal: Calendar = Calendar.getInstance()
+                cal.set(
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DAY_OF_MONTH),
+                    15, 30,
+                    0
+                )
+                setNotificationAlarm(cal.timeInMillis)
+
+            }
 
         }
 
@@ -72,7 +86,23 @@ class MainActivity : AppCompatActivity() {
     private fun setAlarm(timeInMillis: Long) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, ResetAlarm::class.java)
-        intent.setAction("com.example.drinkwater.broadcast")
+        intent.setAction("com.example.drinkwater.broadcast.reset")
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+        alarmManager.setRepeating(
+            AlarmManager.RTC,
+            timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
+
+        Toast.makeText(this, "Alarm is set", Toast.LENGTH_SHORT).show()
+
+    }
+
+    private fun setNotificationAlarm(timeInMillis: Long) {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, ResetAlarm::class.java)
+        intent.setAction("com.example.drinkwater.broadcast.notify")
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
         alarmManager.setRepeating(
             AlarmManager.RTC,
