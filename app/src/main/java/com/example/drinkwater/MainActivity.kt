@@ -57,6 +57,16 @@ class MainActivity : AppCompatActivity() {
         System.out.println("time" + calendar.timeInMillis)
         setAlarm(calendar.timeInMillis)
 
+        val switches = arrayOf("switch08", "switch10")
+        for (i in switches.indices) {
+            myDataStore.getSwitchState(switches[i])
+            System.out.println("switches[i] :n " + switches[i])
+            System.out.println("myDataStore.getSwitchState(switches[i]) : ")
+            System.out.println( myDataStore.getSwitchState(switches[i])
+            )
+
+        }
+
     }
 
     private fun setAlarm(timeInMillis: Long) {
@@ -71,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             pendingIntent
         )
 
-        Toast.makeText(this, "Alarm is set", Toast.LENGTH_LONG).show()
+        //Toast.makeText(this, "Alarm is set", Toast.LENGTH_LONG).show()
 
     }
 

@@ -1,10 +1,7 @@
 package com.example.drinkwater
 
 import android.content.Context
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.doublePreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.*
 import com.example.drinkwater.ui.home.dataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -15,9 +12,10 @@ class DataStoreProvider(private val context: Context) {
 
     private val TOTAL_AMOUNT = intPreferencesKey("total_amount")
     private val dailyGoal = doublePreferencesKey("daily_goal")
+    private val switch08 = booleanPreferencesKey("switch08")
+    private val switch10 = booleanPreferencesKey("switch10")
 
     fun updateTotalAmount(value: Int) {
-        System.out.println("updateTotalAmount val " + value)
         runBlocking {
             context.dataStore.edit { setting ->
                 setting[TOTAL_AMOUNT] = value
@@ -46,6 +44,26 @@ class DataStoreProvider(private val context: Context) {
         return runBlocking {
             context.dataStore.data.map {
                 it[dailyGoal]
+            }.first()
+        }
+    }
+
+    fun updateSwitchState(switch: String, value: Boolean) {
+        val switch = booleanPreferencesKey("switchName")
+
+        runBlocking {
+            context.dataStore.edit { setting ->
+                setting[switch] = value
+            }
+        }
+    }
+
+    fun getSwitchState(switchName: String): Boolean? {
+        val switch = booleanPreferencesKey("switchName")
+
+        return runBlocking {
+            context.dataStore.data.map {
+                it[switch]
             }.first()
         }
     }

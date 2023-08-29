@@ -18,11 +18,10 @@ import com.example.drinkwater.databinding.FragmentDashboardBinding
 import com.example.drinkwater.ui.home.NotificationWorker
 import java.util.concurrent.TimeUnit
 
-class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class DashboardFragment : Fragment() {
     lateinit var myDataStore: DataStoreProvider
 
     private lateinit var sharedViewModel: SharedViewModel
-    private lateinit var notificationIntervalEditText: EditText
 
     private var _binding: FragmentDashboardBinding? = null
 
@@ -44,8 +43,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
         myDataStore = DataStoreProvider(requireContext())
 
         //val textView: TextView = binding.textDashboard
-        notificationIntervalEditText = binding.edittextNotificationInterval
-        val saveButton: Button = binding.btnSave
+        //notificationIntervalEditText = binding.edittextNotificationInterval
         val btnSaveDailyGoal: Button = binding.btnSaveDailyGoal
         val textDailyGoal: EditText = binding.textDailyGoal
         val text1: TextView = binding.text1
@@ -58,21 +56,6 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
             "app_preferences",
             Context.MODE_PRIVATE
         )
-        val currentInterval = sharedPreferences.getLong("notification_interval", 1L)
-        print("current interval : " + currentInterval)
-        notificationIntervalEditText.setText(currentInterval.toString())
-
-        saveButton.setOnClickListener {
-            val intervalText = notificationIntervalEditText.text.toString()
-            val interval = intervalText.toLongOrNull()
-            if (interval != null && interval > 0) {
-                saveNotificationInterval(interval)
-
-                // Reschedule the work with the new interval
-                rescheduleNotificationWorker(interval)
-            }
-        }
-
         btnSaveDailyGoal.setOnClickListener {
             val goal = textDailyGoal.text.toString()
             sharedViewModel.changeData(goal)
@@ -82,23 +65,26 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
 
-        // spinner
+        // switches
+        val switch08 : Switch = binding.switch08
 
-        val spinner: Spinner = binding.intervalSpinner
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.intervals_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            spinner.adapter = adapter
+        if (myDataStore.getSwitchState("switch08") == true) {
+            switch08.isChecked = true
+        } else {
+            switch08.isChecked = false
         }
 
+        switch08.setOnCheckedChangeListener { switch08, isChecked ->
+            if (isChecked) {
+                myDataStore.updateSwitchState(switch08.toString(), true)
+                switch08.isChecked = true
+                System.out.println(myDataStore.getSwitchState("switch08"))
+            } else {
+                switch08.isChecked = false
+                myDataStore.updateSwitchState(switch08.toString(), false)
+            }
 
-        spinner.onItemSelectedListener = this
+        }
 
         return root
     }
@@ -134,19 +120,5 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
         _binding = null
     }
 
-    //
-    // spinner responding user selections
-    //
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-        print("on item selected")
-        print("selected item:")
 
-        if (parent != null) {
-            print(parent.getItemAtPosition(pos))
-        }
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        print("onNothingSelected,,")
-    }
 }

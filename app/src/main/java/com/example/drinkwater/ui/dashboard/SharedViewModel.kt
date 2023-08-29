@@ -8,7 +8,7 @@ class SharedViewModel : ViewModel() {
     val itemLiveData: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
     private val _text = MutableLiveData<String>().apply {
-        value = "Set notification interval:"
+        value = "Set alarms:"
     }
     val text: LiveData<String> = _text
 
