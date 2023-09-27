@@ -1,5 +1,6 @@
 package com.example.drinkwater.ui.dashboard
 
+import android.widget.ArrayAdapter
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,6 +30,9 @@ class DashboardFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var spinner: Spinner
+    private lateinit var selectedItemText: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,6 +51,9 @@ class DashboardFragment : Fragment() {
         val btnSaveDailyGoal: Button = binding.btnSaveDailyGoal
         val textDailyGoal: EditText = binding.textDailyGoal
         val text1: TextView = binding.text1
+        val spinner = binding.spinner
+        val selectedItemText = binding.selectedItemText
+
         sharedViewModel.text.observe(viewLifecycleOwner, Observer {
             text1.text = it
         })
@@ -65,26 +72,29 @@ class DashboardFragment : Fragment() {
         }
 
 
-        // switches
-        val switch08 : Switch = binding.switch08
+        // spinner
+        // Create an ArrayAdapter for the spinner
+        val items = arrayOf(1, 2, 3, 4)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, items)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        if (myDataStore.getSwitchState("switch08") == true) {
-            switch08.isChecked = true
-        } else {
-            switch08.isChecked = false
-        }
+        // Set the adapter for the spinner
+        spinner.adapter = adapter
 
-        switch08.setOnCheckedChangeListener { switch08, isChecked ->
-            if (isChecked) {
-                myDataStore.updateSwitchState(switch08.toString(), true)
-                switch08.isChecked = true
-                System.out.println(myDataStore.getSwitchState("switch08"))
-            } else {
-                switch08.isChecked = false
-                myDataStore.updateSwitchState(switch08.toString(), false)
+        // Set an item selected listener for the spinner
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedItem = parent.getItemAtPosition(position).toString()
+                selectedItemText.text = "Selected interval: $selectedItem hour(s)"
+                Toast.makeText(requireContext(), "Set interval to $selectedItem hour(s)", Toast.LENGTH_SHORT).show()
+
             }
 
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Do nothing here
+            }
         }
+
 
         return root
     }

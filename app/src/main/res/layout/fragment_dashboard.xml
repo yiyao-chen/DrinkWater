@@ -14,7 +14,7 @@
         android:layout_marginTop="8dp"
         android:text="Set today's goal (ml):"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="26sp"
         app:layout_constraintBottom_toTopOf="@+id/text_daily_goal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,12 +48,12 @@
 
     <TextView
         android:id="@+id/text1"
-        android:text="Set alarms:"
+        android:text="Set notification interval (in hours):"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/switches"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,49 +68,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text1" >
-        <Switch
-            android:id="@+id/switch08"
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/selectedItemText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="08:00"
-            android:textSize="20sp"
-            android:layout_margin="10sp"/>
-        <Switch
-            android:id="@+id/switch10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10:00"
-            android:textSize="20sp"
-            android:layout_margin="10sp"
-           />
-        <Switch
-            android:id="@+id/switch12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12:00"
-            android:textSize="20sp"
-            android:layout_margin="10sp"/>
-        <Switch
-            android:id="@+id/switch14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="14:00"
-            android:textSize="20sp"
-            android:layout_margin="10sp"/>
-        <Switch
-            android:id="@+id/switch16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="16:00"
-            android:textSize="20sp"
-            android:layout_margin="10sp"/>
-        <Switch
-            android:id="@+id/switch18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="18:00"
-            android:textSize="20sp"
-            android:layout_margin="10sp"/>
+            android:layout_gravity="center"
+            android:text="Selected Item: "
+            android:textSize="18sp" />
+
 
     </LinearLayout>
 
