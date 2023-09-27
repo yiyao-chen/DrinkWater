@@ -14,7 +14,7 @@
         android:layout_marginTop="8dp"
         android:text="Set today's goal (ml):"
         android:textAlignment="center"
-        android:textSize="26sp"
+        android:textSize="28sp"
         app:layout_constraintBottom_toTopOf="@+id/text_daily_goal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,42 +48,38 @@
 
     <TextView
         android:id="@+id/text1"
-        android:text="Set notification interval (in hours):"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:text="Set interval (hours):"
         android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/switches"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toTopOf="@+id/selectedItemText"
+        app:layout_constraintEnd_toStartOf="@id/spinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_save_daily_goal" />
-    <LinearLayout
-        android:id="@+id/switches"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text1" >
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/selectedItemText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text1"
+        app:layout_constraintTop_toBottomOf="@+id/btn_save_daily_goal" />
 
         <TextView
             android:id="@+id/selectedItemText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Selected Item: "
-            android:textSize="18sp" />
+            android:text="Selected interval: "
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text1"/>
 
 
-    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

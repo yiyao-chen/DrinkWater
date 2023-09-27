@@ -14,6 +14,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.drinkwater.DataStoreProvider
+import com.example.drinkwater.NotificationUtils
 import com.example.drinkwater.R
 import com.example.drinkwater.databinding.FragmentDashboardBinding
 import com.example.drinkwater.ui.home.NotificationWorker
@@ -88,10 +89,18 @@ class DashboardFragment : Fragment() {
                 selectedItemText.text = "Selected interval: $selectedItem hour(s)"
                 Toast.makeText(requireContext(), "Set interval to $selectedItem hour(s)", Toast.LENGTH_SHORT).show()
 
+                // periodic notification
+                val channelId = "channel_id"
+                val title = "Notification"
+                val content = "It's time to drink some water"
+                val intervalMillis = selectedItem.toInt() * 3600000L // in milliseconds
+                System.out.println("========")
+                NotificationUtils.createNotificationChannel(requireContext(), channelId, "Channel Name")
+                NotificationUtils.scheduleNotification(requireContext(), channelId, title, content, intervalMillis)
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // Do nothing here
             }
         }
 

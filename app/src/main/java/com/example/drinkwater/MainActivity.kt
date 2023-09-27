@@ -81,14 +81,6 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        // periodic notification
-        val channelId = "your_channel_id"
-        val title = "Notification Title"
-        val content = "Notification Content"
-        val intervalMillis = 120000L // in milliseconds
-        System.out.println("========")
-        NotificationUtils.createNotificationChannel(this, channelId, "Your Channel Name")
-        NotificationUtils.scheduleNotification(this, channelId, title, content, intervalMillis)
 
     }
 
