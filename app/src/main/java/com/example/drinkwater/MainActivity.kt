@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         )
 
 
-        System.out.println("time" + calendar.timeInMillis)
+        System.out.println("time::" + calendar.timeInMillis)
         setAlarm(calendar.timeInMillis)
 
         val switches = arrayOf("switch08", "switch10")
@@ -75,11 +75,20 @@ class MainActivity : AppCompatActivity() {
                     15, 30,
                     0
                 )
-                setNotificationAlarm(cal.timeInMillis)
+                //setNotificationAlarm(cal.timeInMillis)
 
             }
 
         }
+
+        // periodic notification
+        val channelId = "your_channel_id"
+        val title = "Notification Title"
+        val content = "Notification Content"
+        val intervalMillis = 120000L // in milliseconds
+        System.out.println("========")
+        NotificationUtils.createNotificationChannel(this, channelId, "Your Channel Name")
+        NotificationUtils.scheduleNotification(this, channelId, title, content, intervalMillis)
 
     }
 
