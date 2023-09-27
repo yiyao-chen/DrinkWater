@@ -6,79 +6,77 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
+    <!-- Set today's goal -->
     <TextView
         android:id="@+id/text_set_todays_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Set today's goal (ml):"
-        android:textAlignment="center"
         android:textSize="28sp"
-        app:layout_constraintBottom_toTopOf="@+id/text_daily_goal"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginLeft="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <!-- Daily goal input -->
     <EditText
         android:id="@+id/text_daily_goal"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="1000"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_save_daily_goal"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:hint="Enter goal (e.g., 1000)"
+        android:textSize="20sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/text_set_todays_goal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_set_todays_goal">
+        app:layout_constraintEnd_toEndOf="parent" />
 
-
-    </EditText>
+    <!-- Save button -->
     <Button
         android:id="@+id/btn_save_daily_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="18dp"
         android:text="Save"
-        app:layout_constraintBottom_toTopOf="@+id/text1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_daily_goal" />
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/text_daily_goal"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Set interval label -->
     <TextView
         android:id="@+id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Set interval (hours):"
-        android:textAlignment="center"
         android:textSize="28sp"
-        app:layout_constraintBottom_toTopOf="@+id/selectedItemText"
-        app:layout_constraintEnd_toStartOf="@id/spinner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_save_daily_goal" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_save_daily_goal"
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Spinner for interval -->
     <Spinner
         android:id="@+id/spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/btn_save_daily_goal"
+        app:layout_constraintStart_toEndOf="@+id/text1"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Selected interval text -->
+    <TextView
+        android:id="@+id/selectedItemText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/selectedItemText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/text1"
-        app:layout_constraintTop_toBottomOf="@+id/btn_save_daily_goal" />
-
-        <TextView
-            android:id="@+id/selectedItemText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Selected interval: "
-            android:textSize="28sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text1"/>
-
+        android:text="Selected interval:"
+        android:textSize="28sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/text1"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 
