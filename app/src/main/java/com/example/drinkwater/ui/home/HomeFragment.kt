@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //Fragment之间通过传入同一个Activity来共享ViewModel
+        //share ViewModel between fragments by passing same Activity
         sharedViewModel =
             ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
@@ -64,7 +64,6 @@ class HomeFragment : Fragment() {
             textGoal.text = itemStr
         })
 
-
         return root
     }
 
@@ -75,6 +74,7 @@ class HomeFragment : Fragment() {
         val buttonIncrease: Button = binding.btnIncrease
         val buttonDecrease: Button = binding.btnDecrease
         val buttonAdd: Button = binding.btnAdd
+        val buttonClear: Button = binding.btnClear
 
         val textAmount: TextView = binding.textAmount
         val textTotalAmount: TextView = binding.textTotalAmount
@@ -128,6 +128,14 @@ class HomeFragment : Fragment() {
 
             textTotalAmount.setText(myDataStore.getTotalAmount().toString())
 
+            updateImage(imgBottle)
+
+        }
+
+        buttonClear.setOnClickListener {
+            System.out.println("clicked button clear")
+            myDataStore.updateTotalAmount(0)
+            textTotalAmount.setText(myDataStore.getTotalAmount().toString())
             updateImage(imgBottle)
 
         }
