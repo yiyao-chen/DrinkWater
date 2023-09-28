@@ -12,14 +12,13 @@ import java.util.*
 class NotificationBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         System.out.println("NotificationBroadcastReceiver receive")
-        Toast.makeText(context, "notify....", Toast.LENGTH_LONG).show()
         showNotifications(context)
     }
 
     fun showNotifications(context: Context) {
-        val channelId = "your_channel_id"
-        val title = "Hello"
-        val contentText = "It's time to drink some water!"
+        val channelId = "channel_id"
+        val title = "Hey " + "\uD83D\uDC4B"
+        val contentText = "It's time to drink some water! " + "\uD83D\uDCA7"
 
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_baseline_notifications_24)

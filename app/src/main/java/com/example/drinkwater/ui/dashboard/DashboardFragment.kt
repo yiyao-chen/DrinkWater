@@ -55,7 +55,6 @@ class DashboardFragment : Fragment() {
         // Load interval value
         val interval = myDataStore.getNotificationInterval()
         selectedItemText.text =  "Current interval: $interval hour(s)"
-        System.out.println("......interval on store " + interval)
 
         btnSaveDailyGoal.setOnClickListener {
             val goal = textDailyGoal.text.toString()

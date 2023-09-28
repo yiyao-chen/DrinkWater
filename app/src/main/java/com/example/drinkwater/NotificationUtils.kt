@@ -19,8 +19,6 @@ object NotificationUtils {
             AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
-
-        Toast.makeText(context, "Alarm is set", Toast.LENGTH_SHORT).show()
     }
 
     fun setNotificationAlarm(context: Context, intervalTimeInMillis: Long) {
