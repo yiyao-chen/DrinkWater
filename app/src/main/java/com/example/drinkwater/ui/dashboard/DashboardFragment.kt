@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.drinkwater.DataStoreProvider
+import com.example.drinkwater.NotificationUtils
 import com.example.drinkwater.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {
@@ -89,13 +90,8 @@ class DashboardFragment : Fragment() {
                     System.out.println("saved to DataStore " + myDataStore.getNotificationInterval())
 
                     // periodic notification
-                    val channelId = "channel_id"
-                    val title = "Notification"
-                    val content = "It's time to drink some water"
-                    val intervalMillis = selectedItem.toInt() * 3600000L // in milliseconds
-
-
-
+                    val intervalMillis = (selectedItem.toInt() * 60 * 60 * 1000).toLong() // in milliseconds
+                    NotificationUtils.setNotificationAlarm(requireContext(), intervalMillis)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {

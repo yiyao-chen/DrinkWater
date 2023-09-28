@@ -48,10 +48,14 @@ class MainActivity : AppCompatActivity() {
             0
         )
 
+        val intervalTimeInMillis = (myDataStore.getNotificationInterval() ?: 1) * 60*1000
 
         System.out.println("time::" + calendar.timeInMillis)
+        System.out.println("datastore interval::" + myDataStore.getNotificationInterval())
+        System.out.println("intervalTimeInMillis::" + intervalTimeInMillis)
+
         NotificationUtils.setAlarm(this, calendar.timeInMillis)
-        NotificationUtils.setNotificationAlarm(this, calendar.timeInMillis)
+        NotificationUtils.setNotificationAlarm(this, intervalTimeInMillis.toLong())
 
     }
 

@@ -6,12 +6,13 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import java.time.LocalDateTime
+import java.util.*
 
 class NotificationBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        System.out.println("NotificationBroadcastReceiver action:" + intent.action)
+        System.out.println("NotificationBroadcastReceiver receive")
         Toast.makeText(context, "notify....", Toast.LENGTH_LONG).show()
-
         showNotifications(context)
     }
 

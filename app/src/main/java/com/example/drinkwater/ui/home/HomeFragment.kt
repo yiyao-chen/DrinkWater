@@ -75,7 +75,7 @@ class HomeFragment : Fragment() {
         val textDailyGoal: TextView = binding.textGoal
         val imgBottle: ImageView = binding.homeImg
         var amountTobeAdded = 0
-        
+
         textDailyGoal.setText(myDataStore.getDailyGoal().toString() + " ml")
         textTotalAmount.setText(myDataStore.getTotalAmount().toString())
 
