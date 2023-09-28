@@ -3,20 +3,30 @@ package com.example.drinkwater
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.app.NotificationManager
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 
 class NotificationBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        Toast.makeText(context, "notify....", Toast.LENGTH_SHORT).show()
-        System.out.println("notifyyyy")
-        val channelId = intent.getStringExtra("channelId") ?: ""
-        val title = intent.getStringExtra("title") ?: ""
-        val content = intent.getStringExtra("content") ?: ""
+        System.out.println("NotificationBroadcastReceiver action:" + intent.action)
+        Toast.makeText(context, "notify....", Toast.LENGTH_LONG).show()
 
-        val notification = NotificationUtils.buildNotification(context, channelId, title, content)
+        showNotifications(context)
+    }
 
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(1, notification)
+    fun showNotifications(context: Context) {
+        val channelId = "your_channel_id"
+        val title = "Notification"
+        val contentText = "It's time to drink water!"
+
+        val builder = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+            .setContentTitle(title)
+            .setContentText(contentText)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        val notificationManager = NotificationManagerCompat.from(context)
+        notificationManager.notify(1, builder.build())
     }
 }

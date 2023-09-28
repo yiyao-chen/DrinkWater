@@ -1,12 +1,18 @@
 package com.example.drinkwater
 
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -57,30 +63,7 @@ class MainActivity : AppCompatActivity() {
         System.out.println("time::" + calendar.timeInMillis)
         setAlarm(calendar.timeInMillis)
 
-        val switches = arrayOf("switch08", "switch10")
-        for (i in switches.indices) {
-            myDataStore.getSwitchState(switches[i])
-            System.out.println("switches[i] :n " + switches[i])
-            System.out.println("myDataStore.getSwitchState(switches[i]) : ")
-            System.out.println( myDataStore.getSwitchState(switches[i])
-
-            )
-            if (myDataStore.getSwitchState(switches[i]) == true) {
-                System.out.println(" schedule alarm ")
-                val cal: Calendar = Calendar.getInstance()
-                cal.set(
-                    cal.get(Calendar.YEAR),
-                    cal.get(Calendar.MONTH),
-                    cal.get(Calendar.DAY_OF_MONTH),
-                    15, 30,
-                    0
-                )
-                //setNotificationAlarm(cal.timeInMillis)
-
-            }
-
-        }
-
+        setNotificationAlarm(calendar.timeInMillis)
 
     }
 
@@ -100,20 +83,19 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     private fun setNotificationAlarm(timeInMillis: Long) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(this, ResetAlarm::class.java)
+        val intent = Intent(this, NotificationBroadcastReceiver::class.java)
         intent.setAction("com.example.drinkwater.broadcast.notify")
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-        alarmManager.setRepeating(
+        alarmManager.setInexactRepeating(
             AlarmManager.RTC,
             timeInMillis,
-            AlarmManager.INTERVAL_DAY,
+            (60*1000).toLong(),
             pendingIntent
         )
-
-        //Toast.makeText(this, "Alarm is set", Toast.LENGTH_LONG).show()
-
+        
     }
 
 
