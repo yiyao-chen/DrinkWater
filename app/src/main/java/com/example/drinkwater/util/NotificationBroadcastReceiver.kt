@@ -1,13 +1,12 @@
-package com.example.drinkwater
+package com.example.drinkwater.util
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import java.time.LocalDateTime
-import java.util.*
+import com.example.drinkwater.R
+
 
 class NotificationBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {

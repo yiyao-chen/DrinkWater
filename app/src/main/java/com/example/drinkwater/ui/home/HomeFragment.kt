@@ -1,8 +1,7 @@
 package com.example.drinkwater.ui.home
 
-import android.app.AlarmManager
+import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,18 +14,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import com.example.drinkwater.DataStoreProvider
+import com.example.drinkwater.util.DataStoreProvider
 import com.example.drinkwater.R
 import com.example.drinkwater.databinding.FragmentHomeBinding
 import com.example.drinkwater.ui.dashboard.SharedViewModel
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -119,6 +110,17 @@ class HomeFragment : Fragment() {
             textTotalAmount.setText(myDataStore.getTotalAmount().toString())
 
             updateImage(imgBottle)
+
+            // if daily goal reached
+            if (myDataStore.getTotalAmount()!! >= myDataStore.getDailyGoal()!!) {
+                val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+                builder
+                    .setTitle("Congratulations! \uD83C\uDF89 \uD83C\uDF88 \uD83E\uDD73")
+                    .setMessage("You have reached your goal \uD83C\uDF1F")
+
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+            }
 
         }
 

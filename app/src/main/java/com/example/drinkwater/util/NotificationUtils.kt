@@ -1,11 +1,10 @@
-package com.example.drinkwater
+package com.example.drinkwater.util
 
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
-import android.widget.Toast
 
 object NotificationUtils {
     fun setAlarm(context: Context, timeInMillis: Long) {

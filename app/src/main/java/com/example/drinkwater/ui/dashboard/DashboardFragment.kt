@@ -9,8 +9,8 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.drinkwater.DataStoreProvider
-import com.example.drinkwater.NotificationUtils
+import com.example.drinkwater.util.DataStoreProvider
+import com.example.drinkwater.util.NotificationUtils
 import com.example.drinkwater.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {

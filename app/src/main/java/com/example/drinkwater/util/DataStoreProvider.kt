@@ -1,4 +1,4 @@
-package com.example.drinkwater
+package com.example.drinkwater.util
 
 import android.content.Context
 import androidx.datastore.preferences.core.*
@@ -59,25 +59,6 @@ class DataStoreProvider(private val context: Context) {
         return runBlocking {
             context.dataStore.data.map {
                 it[NOTIFICATION_INTERVAL]
-            }.first()
-        }
-    }
-
-
-    fun getSwitchState(switchName: String): Boolean? {
-        val switch = booleanPreferencesKey("switchName")
-
-        return runBlocking {
-            context.dataStore.data.map {
-                it[switch]
-            }.first()
-        }
-    }
-
-    fun <T> readIntData(key: Preferences.Key<T>, defValue: T): T {
-        return runBlocking {
-            context.dataStore.data.map {
-                it[key] ?: defValue
             }.first()
         }
     }
