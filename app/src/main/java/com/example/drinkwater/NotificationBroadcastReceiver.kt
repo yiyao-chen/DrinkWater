@@ -17,8 +17,8 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
 
     fun showNotifications(context: Context) {
         val channelId = "your_channel_id"
-        val title = "Notification"
-        val contentText = "It's time to drink water!"
+        val title = "Hello"
+        val contentText = "It's time to drink some water!"
 
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_baseline_notifications_24)

@@ -39,12 +39,6 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-
-//    companion object {
-//        const val CHANNEL_ID = "MyAppChannel"
-//        const val NOTIFICATION_ID = 101
-//    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -81,11 +75,7 @@ class HomeFragment : Fragment() {
         val textDailyGoal: TextView = binding.textGoal
         val imgBottle: ImageView = binding.homeImg
         var amountTobeAdded = 0
-
-        val currentDate = LocalDate.now()
-        val currentDateTime = LocalDateTime.now()
-
-        var time = currentDateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+        
         textDailyGoal.setText(myDataStore.getDailyGoal().toString() + " ml")
         textTotalAmount.setText(myDataStore.getTotalAmount().toString())
 
@@ -140,20 +130,6 @@ class HomeFragment : Fragment() {
 
         }
 
-        // Schedule periodic work using WorkManager
-        val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
-            repeatInterval = 1, // Repeat every 1 hour
-            repeatIntervalTimeUnit = TimeUnit.HOURS
-        ).build()
-
-        val workManager = WorkManager.getInstance(requireContext())
-        workManager.enqueueUniquePeriodicWork(
-            "my_periodic_notification_work",
-            ExistingPeriodicWorkPolicy.KEEP,
-            workRequest
-        )
-
-
 
     }
 
@@ -188,45 +164,6 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
-    private suspend fun saveAmountToPreferencesStore(amount: Int) {
-        System.out.println("saveAmountToPreferencesStore")
-
-//        requireContext().dataStore.edit { preferences ->
-//            preferences[TOTAL_AMOUNT] = amount
-//            System.out.println("preferences[TOTAL_AMOUNT]... " + preferences[TOTAL_AMOUNT])
-//        }
-
-        //myDataStore.saveTotalAmount(amount)
-
-        //System.out.println(myDataStore.readTotalAmount() )
-    }
-
-//
-//    private fun getIntSync(key: String, defValue: Int): Int =
-//        readNonNullData(intPreferencesKey(key), defValue)
-//
-
-
-//    private fun showNotification() {
-//        val notificationManager = requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val channel = NotificationChannel(
-//                CHANNEL_ID,
-//                "MyApp Channel",
-//                NotificationManager.IMPORTANCE_DEFAULT
-//            )
-//            notificationManager.createNotificationChannel(channel)
-//        }
-//        val notification = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
-//            .setContentTitle("MyApp Notification")
-//            .setContentText("You clicked the button!")
-//            .setSmallIcon(R.drawable.ic_baseline_notifications_24)
-//            .build()
-//
-//        notificationManager.notify(NOTIFICATION_ID, notification)
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

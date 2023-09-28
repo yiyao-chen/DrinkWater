@@ -1,18 +1,7 @@
 package com.example.drinkwater
 
-import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -61,42 +50,11 @@ class MainActivity : AppCompatActivity() {
 
 
         System.out.println("time::" + calendar.timeInMillis)
-        setAlarm(calendar.timeInMillis)
-
-        setNotificationAlarm(calendar.timeInMillis)
-
-    }
-
-    private fun setAlarm(timeInMillis: Long) {
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(this, ResetAlarm::class.java)
-        intent.setAction("com.example.drinkwater.broadcast.reset")
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-        alarmManager.setRepeating(
-            AlarmManager.RTC,
-            timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
-
-        Toast.makeText(this, "Alarm is set", Toast.LENGTH_SHORT).show()
+        NotificationUtils.setAlarm(this, calendar.timeInMillis)
+        NotificationUtils.setNotificationAlarm(this, calendar.timeInMillis)
 
     }
 
-
-    private fun setNotificationAlarm(timeInMillis: Long) {
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(this, NotificationBroadcastReceiver::class.java)
-        intent.setAction("com.example.drinkwater.broadcast.notify")
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-        alarmManager.setInexactRepeating(
-            AlarmManager.RTC,
-            timeInMillis,
-            (60*1000).toLong(),
-            pendingIntent
-        )
-        
-    }
 
 
 }

@@ -1,7 +1,6 @@
 package com.example.drinkwater.ui.dashboard
 
 import android.widget.ArrayAdapter
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +9,8 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.example.drinkwater.DataStoreProvider
-import com.example.drinkwater.NotificationUtils
-import com.example.drinkwater.R
 import com.example.drinkwater.databinding.FragmentDashboardBinding
-import com.example.drinkwater.ui.home.NotificationWorker
-import java.util.concurrent.TimeUnit
 
 class DashboardFragment : Fragment() {
     lateinit var myDataStore: DataStoreProvider
@@ -101,9 +93,6 @@ class DashboardFragment : Fragment() {
                     val title = "Notification"
                     val content = "It's time to drink some water"
                     val intervalMillis = selectedItem.toInt() * 3600000L // in milliseconds
-                    System.out.println("========")
-                    NotificationUtils.createNotificationChannel(requireContext(), channelId, "Channel Name")
-                    NotificationUtils.scheduleNotification(requireContext(), channelId, title, content, intervalMillis)
 
 
 
@@ -117,31 +106,6 @@ class DashboardFragment : Fragment() {
         return root
     }
 
-    private fun saveNotificationInterval(interval: Long) {
-        val sharedPreferences = requireContext().getSharedPreferences(
-            "app_preferences",
-            Context.MODE_PRIVATE
-        )
-        print("saved interval: " + interval)
-        sharedPreferences.edit().putLong("notification_interval", interval).apply()
-    }
-
-    private fun rescheduleNotificationWorker(interval: Long) {
-        val workManager = WorkManager.getInstance(requireContext())
-        workManager.cancelAllWorkByTag("notification_periodic_worker")
-
-        val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
-            repeatInterval = interval,
-            repeatIntervalTimeUnit = TimeUnit.HOURS
-        ).addTag("notification_periodic_worker")
-            .build()
-
-        workManager.enqueueUniquePeriodicWork(
-            "notification_periodic_worker",
-            ExistingPeriodicWorkPolicy.REPLACE,
-            workRequest
-        )
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
