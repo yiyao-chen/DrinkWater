@@ -59,11 +59,11 @@ class DashboardFragment : Fragment() {
             text1.text = it
         })
 
-        // Load current interval value from SharedPreferences
-        val sharedPreferences = requireContext().getSharedPreferences(
-            "app_preferences",
-            Context.MODE_PRIVATE
-        )
+        // Load interval value
+        val interval = myDataStore.getNotificationInterval()
+        selectedItemText.text =  "Current interval: $interval hour(s)"
+        System.out.println("......interval on store " + interval)
+
         btnSaveDailyGoal.setOnClickListener {
             val goal = textDailyGoal.text.toString()
             sharedViewModel.changeData(goal)
@@ -75,28 +75,37 @@ class DashboardFragment : Fragment() {
 
         // spinner
         // Create an ArrayAdapter for the spinner
-        val items = arrayOf(1, 2, 3, 4)
+        val items = arrayOf("select", 1, 2, 3, 4)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        // Set the adapter for the spinner
         spinner.adapter = adapter
 
         // Set an item selected listener for the spinner
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedItem = parent.getItemAtPosition(position).toString()
-                selectedItemText.text = "Selected interval: $selectedItem hour(s)"
-                Toast.makeText(requireContext(), "Set interval to $selectedItem hour(s)", Toast.LENGTH_SHORT).show()
 
-                // periodic notification
-                val channelId = "channel_id"
-                val title = "Notification"
-                val content = "It's time to drink some water"
-                val intervalMillis = selectedItem.toInt() * 3600000L // in milliseconds
-                System.out.println("========")
-                NotificationUtils.createNotificationChannel(requireContext(), channelId, "Channel Name")
-                NotificationUtils.scheduleNotification(requireContext(), channelId, title, content, intervalMillis)
+                if (position == 0) {
+                    return
+                }
+                    val selectedItem = parent.getItemAtPosition(position).toString()
+
+                    selectedItemText.text = "Current interval: $selectedItem hour(s)"
+                    Toast.makeText(requireContext(), "Set interval to $selectedItem hour(s)", Toast.LENGTH_SHORT).show()
+
+                    myDataStore.updateNotificationInterval(selectedItem.toInt())
+                    System.out.println("saved to DataStore " + myDataStore.getNotificationInterval())
+
+                    // periodic notification
+                    val channelId = "channel_id"
+                    val title = "Notification"
+                    val content = "It's time to drink some water"
+                    val intervalMillis = selectedItem.toInt() * 3600000L // in milliseconds
+                    System.out.println("========")
+                    NotificationUtils.createNotificationChannel(requireContext(), channelId, "Channel Name")
+                    NotificationUtils.scheduleNotification(requireContext(), channelId, title, content, intervalMillis)
+
+
 
             }
 

@@ -12,8 +12,7 @@ class DataStoreProvider(private val context: Context) {
 
     private val TOTAL_AMOUNT = intPreferencesKey("total_amount")
     private val dailyGoal = doublePreferencesKey("daily_goal")
-    private val switch08 = booleanPreferencesKey("switch08")
-    private val switch10 = booleanPreferencesKey("switch10")
+    private val NOTIFICATION_INTERVAL = intPreferencesKey("notification_interval")
 
     fun updateTotalAmount(value: Int) {
         runBlocking {
@@ -27,6 +26,14 @@ class DataStoreProvider(private val context: Context) {
         runBlocking {
             context.dataStore.edit { setting ->
                 setting[dailyGoal] = value
+            }
+        }
+    }
+
+    fun updateNotificationInterval(value: Int) {
+        runBlocking {
+            context.dataStore.edit { setting ->
+                setting[NOTIFICATION_INTERVAL] = value
             }
         }
     }
@@ -48,15 +55,14 @@ class DataStoreProvider(private val context: Context) {
         }
     }
 
-    fun updateSwitchState(switch: String, value: Boolean) {
-        val switch = booleanPreferencesKey("switchName")
-
-        runBlocking {
-            context.dataStore.edit { setting ->
-                setting[switch] = value
-            }
+    fun getNotificationInterval(): Int? {
+        return runBlocking {
+            context.dataStore.data.map {
+                it[NOTIFICATION_INTERVAL]
+            }.first()
         }
     }
+
 
     fun getSwitchState(switchName: String): Boolean? {
         val switch = booleanPreferencesKey("switchName")
