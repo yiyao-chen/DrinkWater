@@ -1,11 +1,16 @@
 package com.example.drinkwater
 
+import android.content.Context
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.drinkwater.databinding.ActivityMainBinding
+import com.example.drinkwater.util.DataStoreProvider
+import com.example.drinkwater.util.NotificationUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.*
 
@@ -50,13 +55,17 @@ class MainActivity : AppCompatActivity() {
 
         val intervalTimeInMillis = (myDataStore.getNotificationInterval() ?: 1) * 60*1000
 
-        System.out.println("time::" + calendar.timeInMillis)
-        System.out.println("datastore interval::" + myDataStore.getNotificationInterval())
-        System.out.println("intervalTimeInMillis::" + intervalTimeInMillis)
-
         NotificationUtils.setAlarm(this, calendar.timeInMillis)
         NotificationUtils.setNotificationAlarm(this, intervalTimeInMillis.toLong())
 
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
 
